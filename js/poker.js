@@ -112,7 +112,7 @@ const VideoPoker = () => {
         const context = new (window.AudioContext || window.webkitAudioContext)();
         setAudioContext(context);
       } catch (error) {
-        console.log('Audio no soportado:', error);
+        // Audio no soportado (silenciado)
       }
     };
     
@@ -149,7 +149,7 @@ const VideoPoker = () => {
         const progress = i / snapData.length;
         // Impulso inicial muy rápido
         const impulse = Math.exp(-progress * 15) * (Math.random() - 0.5);
-        snapData[i] = impulse * 0.3;
+        snapData[i] = impulse * 0.7; // VOLUMEN AUMENTADO de 0.3 a 0.7
       }
       
       // Crear el "swoosh" que sigue (aire moviéndose)
@@ -161,7 +161,7 @@ const VideoPoker = () => {
       for (let i = 0; i < swooshData.length; i++) {
         const progress = i / swooshData.length;
         // Ruido filtrado que decae
-        const noise = (Math.random() - 0.5) * Math.exp(-progress * 8) * 0.15;
+        const noise = (Math.random() - 0.5) * Math.exp(-progress * 8) * 0.4; // VOLUMEN AUMENTADO de 0.15 a 0.4
         swooshData[i] = noise;
       }
       
@@ -175,7 +175,7 @@ const VideoPoker = () => {
       snapFilter.frequency.setValueAtTime(2000 * pitch, now); // Frecuencia alta para el "click"
       snapFilter.Q.setValueAtTime(2, now);
       
-      snapGain.gain.setValueAtTime(0.05, now); // Muy sutil
+      snapGain.gain.setValueAtTime(0.5, now); // VOLUMEN AUMENTADO de 0.05 a 0.5
       
       snapSource.connect(snapFilter);
       snapFilter.connect(snapGain);
@@ -196,7 +196,7 @@ const VideoPoker = () => {
       
       // Fade in y fade out muy rápido
       swooshGain.gain.setValueAtTime(0, now + snapDuration);
-      swooshGain.gain.linearRampToValueAtTime(0.03, now + snapDuration + 0.01);
+      swooshGain.gain.linearRampToValueAtTime(0.4, now + snapDuration + 0.01); // VOLUMEN AUMENTADO de 0.03 a 0.4
       swooshGain.gain.exponentialRampToValueAtTime(0.001, now + duration);
       
       swooshSource.connect(swooshFilter);
@@ -206,8 +206,10 @@ const VideoPoker = () => {
       swooshSource.start(now + snapDuration);
       swooshSource.stop(now + duration);
       
+      // Sonido reproducido correctamente
+      
     } catch (error) {
-      console.log('Error reproduciendo sonido:', error);
+      // Error de audio (silenciado en producción)
     }
   };
 
@@ -230,14 +232,14 @@ const VideoPoker = () => {
     try {
       if (audioContext.state === 'suspended') {
         await audioContext.resume();
-        console.log('Audio context resumed successfully');
+        // Audio context resumed
         
         // Reproducir sonido de prueba muy bajo para verificar
         const testOscillator = audioContext.createOscillator();
         const testGain = audioContext.createGain();
         
         testOscillator.frequency.value = 440;
-        testGain.gain.value = 0.01; // Muy bajo
+        testGain.gain.value = 0.4; // VOLUMEN AUMENTADO de 0.01 a 0.4
         
         testOscillator.connect(testGain);
         testGain.connect(audioContext.destination);
@@ -245,10 +247,10 @@ const VideoPoker = () => {
         testOscillator.start();
         testOscillator.stop(audioContext.currentTime + 0.1);
         
-        console.log('Test sound played');
+        // Test sound played
       }
     } catch (error) {
-      console.error('Error initializing audio:', error);
+      // Error initializing audio (silenciado)
     }
   };
 
@@ -257,13 +259,19 @@ const VideoPoker = () => {
     if (!soundsEnabled && audioContext) {
       // Al activar sonidos, asegurarse de que el contexto esté activo
       await initializeAudioWithUserGesture();
+      
+      // Reproducir sonido de prueba inmediatamente para confirmar que funciona
+      setTimeout(() => {
+        // Reproduciendo sonido de prueba
+        playCardFlipSound(1.0);
+      }, 100);
     }
     setSoundsEnabled(!soundsEnabled);
     
     if (!soundsEnabled) {
-      console.log('Sonidos activados');
+      // Sonidos activados
     } else {
-      console.log('Sonidos desactivados');
+      // Sonidos desactivados
     }
   };
 
@@ -1606,16 +1614,20 @@ const VideoPoker = () => {
       key: 'bottom-controls',
       className: 'fixed bottom-4 right-4 flex gap-4 z-50'
     }, [
-      // Botón de sonidos (TOGGLE simple)
+      // Botón de sonidos (TOGGLE simple) con feedback visual
       React.createElement('button', {
         key: 'sound-toggle-button',
         onClick: toggleSounds,
-        className: 'w-12 h-12 rounded-full bg-black/70 backdrop-blur-sm border-2 border-white/20 hover:border-white/40 text-white transition-all duration-300 shadow-lg flex items-center justify-center',
+        className: `w-12 h-12 rounded-full backdrop-blur-sm border-2 text-white transition-all duration-300 shadow-lg flex items-center justify-center ${
+          soundsEnabled 
+            ? 'bg-green-600/70 border-green-400/40 hover:border-green-400/60' 
+            : 'bg-black/70 border-white/20 hover:border-white/40'
+        }`,
         title: soundsEnabled ? 'Desactivar sonidos' : 'Activar sonidos'
       }, [
         React.createElement('span', {
           key: 'sound-icon',
-          className: 'text-xl'
+          className: `text-xl ${soundsEnabled ? 'animate-pulse' : ''}`
         }, soundsEnabled ? '🔊' : '🔇')
       ]),
       chips < 100 && React.createElement('button', {
@@ -1643,55 +1655,55 @@ if (container) {
   try {
     const root = ReactDOM.createRoot(container);
     root.render(React.createElement(VideoPoker));
-    console.log('✅ Juego cargado correctamente');
+    // Juego cargado correctamente
     
     // Ocultar pantalla de carga inmediatamente después del render exitoso
     setTimeout(hideLoadingScreen, 500);
     
   } catch (error) {
-    console.error('❌ Error al renderizar:', error);
+    // Error al renderizar
     container.innerHTML = '<div style="color: white; text-align: center; padding: 50px;">Error al cargar el juego. Por favor, recarga la página.</div>';
   }
 } else {
-  console.error('❌ No se encontró el elemento root');
+  // No se encontró el elemento root
 }
 
 // Hide loading screen when app loads - MÚLTIPLES MÉTODOS
 function hideLoadingScreen() {
   const loadingScreen = document.getElementById('loading');
   if (loadingScreen) {
-    console.log('🚀 Ocultando pantalla de carga...');
+    // Ocultando pantalla de carga
     loadingScreen.style.transition = 'opacity 0.5s ease-out';
     loadingScreen.style.opacity = '0';
     setTimeout(() => {
       loadingScreen.style.display = 'none';
-      console.log('✅ Pantalla de carga ocultada');
+      // Pantalla de carga ocultada
     }, 500);
   } else {
-    console.warn('⚠️ No se encontró el elemento loading');
+    // No se encontró el elemento loading
   }
 }
 
 // Múltiples triggers para asegurar que se oculte
 window.addEventListener('load', () => {
-  console.log('📱 Window load event triggered');
+  // Window load event
   setTimeout(hideLoadingScreen, 1500);
 });
 
 // Backup: DOMContentLoaded
 document.addEventListener('DOMContentLoaded', () => {
-  console.log('📄 DOMContentLoaded triggered');
+  // DOMContentLoaded
   setTimeout(hideLoadingScreen, 2000);
 });
 
 // Backup: React loaded
 if (typeof React !== 'undefined') {
-  console.log('⚛️ React detected, hiding loading screen');
+  // React detected
   setTimeout(hideLoadingScreen, 2500);
 }
 
 // Fallback: Force hide after 5 seconds
 setTimeout(() => {
-  console.log('⏰ Fallback: Forcing loading screen hide after 5s');
+  // Fallback: Forcing loading screen hide
   hideLoadingScreen();
 }, 5000);
