@@ -1589,8 +1589,10 @@ const VideoPoker = () => {
   ]);
 };
 
-// Render the app
-ReactDOM.render(React.createElement(VideoPoker), document.getElementById('root'));
+// Render the app with React 18
+const container = document.getElementById('root');
+const root = ReactDOM.createRoot(container);
+root.render(React.createElement(VideoPoker));
 
 // Hide loading screen when app loads
 window.addEventListener('load', () => {
