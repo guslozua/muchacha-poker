@@ -1599,6 +1599,10 @@ if (container) {
     const root = ReactDOM.createRoot(container);
     root.render(React.createElement(VideoPoker));
     console.log('✅ Juego cargado correctamente');
+    
+    // Ocultar pantalla de carga inmediatamente después del render exitoso
+    setTimeout(hideLoadingScreen, 500);
+    
   } catch (error) {
     console.error('❌ Error al renderizar:', error);
     container.innerHTML = '<div style="color: white; text-align: center; padding: 50px;">Error al cargar el juego. Por favor, recarga la página.</div>';
@@ -1607,12 +1611,42 @@ if (container) {
   console.error('❌ No se encontró el elemento root');
 }
 
-// Hide loading screen when app loads
-window.addEventListener('load', () => {
-  setTimeout(() => {
-    const loadingScreen = document.getElementById('loading');
-    if (loadingScreen) {
+// Hide loading screen when app loads - MÚLTIPLES MÉTODOS
+function hideLoadingScreen() {
+  const loadingScreen = document.getElementById('loading');
+  if (loadingScreen) {
+    console.log('🚀 Ocultando pantalla de carga...');
+    loadingScreen.style.transition = 'opacity 0.5s ease-out';
+    loadingScreen.style.opacity = '0';
+    setTimeout(() => {
       loadingScreen.style.display = 'none';
-    }
-  }, 1500);
+      console.log('✅ Pantalla de carga ocultada');
+    }, 500);
+  } else {
+    console.warn('⚠️ No se encontró el elemento loading');
+  }
+}
+
+// Múltiples triggers para asegurar que se oculte
+window.addEventListener('load', () => {
+  console.log('📱 Window load event triggered');
+  setTimeout(hideLoadingScreen, 1500);
 });
+
+// Backup: DOMContentLoaded
+document.addEventListener('DOMContentLoaded', () => {
+  console.log('📄 DOMContentLoaded triggered');
+  setTimeout(hideLoadingScreen, 2000);
+});
+
+// Backup: React loaded
+if (typeof React !== 'undefined') {
+  console.log('⚛️ React detected, hiding loading screen');
+  setTimeout(hideLoadingScreen, 2500);
+}
+
+// Fallback: Force hide after 5 seconds
+setTimeout(() => {
+  console.log('⏰ Fallback: Forcing loading screen hide after 5s');
+  hideLoadingScreen();
+}, 5000);
