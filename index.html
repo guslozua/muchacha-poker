@@ -144,22 +144,6 @@
     <!-- JavaScript - poker.js -->
     <script type="text/babel" src="js/poker.js"></script>
     
-    <!-- Initialize App -->
-    <script type="text/babel">
-        // Hide loading screen when app loads
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                const loadingScreen = document.getElementById('loading');
-                if (loadingScreen) {
-                    loadingScreen.style.display = 'none';
-                }
-            }, 1000);
-        });
-        
-        // Render the main app usando createRoot (React 18)
-        const container = document.getElementById('root');
-        const root = ReactDOM.createRoot(container);
-        root.render(React.createElement(VideoPoker));
-    </script>
+    <!-- Loading screen will be hidden by poker.js -->
 </body>
 </html>

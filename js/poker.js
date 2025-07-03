@@ -1589,4 +1589,15 @@ const VideoPoker = () => {
   ]);
 };
 
+// Render the app
 ReactDOM.render(React.createElement(VideoPoker), document.getElementById('root'));
+
+// Hide loading screen when app loads
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    const loadingScreen = document.getElementById('loading');
+    if (loadingScreen) {
+      loadingScreen.style.display = 'none';
+    }
+  }, 1500);
+});
