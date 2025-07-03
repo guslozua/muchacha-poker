@@ -1589,4 +1589,4 @@ const VideoPoker = () => {
   ]);
 };
 
-ReactDOM.render(React.createElement(VideoPoker), document.getElementById('game-container'));
+ReactDOM.render(React.createElement(VideoPoker), document.getElementById('root'));
