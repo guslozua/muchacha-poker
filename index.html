@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Muchacha Grande FC - Video Poker</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#1f2937">
+    <meta name="description" content="Video Poker del Muchacha Grande FC - Juego de casino estilo Jacks or Better">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/escudomuchacha.png">
+    <link rel="apple-touch-icon" href="assets/escudomuchacha.png">
+    <link rel="shortcut icon" type="image/png" href="assets/escudomuchacha.png">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- React Libraries - ORDEN CORRECTO -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    animation: {
+                        'pulse': 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'shimmer': 'shimmer 2s ease-in-out infinite',
+                        'bounce': 'bounce 1s infinite',
+                        'ping': 'ping 1s cubic-bezier(0, 0, 0.2, 1) infinite',
+                        'spin': 'spin 1s linear infinite'
+                    },
+                    keyframes: {
+                        shimmer: {
+                            '0%': { transform: 'translateX(-100%)' },
+                            '100%': { transform: 'translateX(100%)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-900">
+    <!-- NUEVA Loading Screen SIN círculos amarillos -->
+    <div id="loading" class="fixed inset-0 bg-gradient-to-br from-green-800 via-green-900 to-black flex items-center justify-center z-50">
+        <div class="text-center">
+            <!-- Logo del Club con efectos NUEVOS -->
+            <div class="mb-6 relative">
+                <div class="w-24 h-24 mx-auto relative">
+                    <!-- HEXÁGONO dorado giratorio (NO círculo) -->
+                    <div class="absolute inset-0 opacity-25">
+                        <svg class="w-full h-full animate-spin" style="animation-duration: 8s;" viewBox="0 0 100 100">
+                            <polygon points="50,5 85,25 85,75 50,95 15,75 15,25" 
+                                     fill="none" 
+                                     stroke="#fbbf24" 
+                                     stroke-width="3" 
+                                     opacity="0.9"/>
+                        </svg>
+                    </div>
+                    
+                    <!-- Estrellas y iconos de fútbol -->
+                    <div class="absolute inset-0">
+                        <div class="absolute top-1 left-1 text-yellow-400 text-lg animate-ping" style="animation-delay: 0s;">⭐</div>
+                        <div class="absolute top-1 right-1 text-blue-400 text-lg animate-ping" style="animation-delay: 0.5s;">⚽</div>
+                        <div class="absolute bottom-1 left-1 text-green-400 text-lg animate-ping" style="animation-delay: 1s;">🏆</div>
+                        <div class="absolute bottom-1 right-1 text-yellow-400 text-lg animate-ping" style="animation-delay: 1.5s;">⭐</div>
+                    </div>
+                    
+                    <!-- Ondas cuadradas en lugar de círculos -->
+                    <div class="absolute inset-0">
+                        <div class="absolute inset-0 border-2 border-yellow-400 animate-ping opacity-20" style="transform: rotate(45deg);"></div>
+                        <div class="absolute inset-3 border-2 border-blue-400 animate-ping opacity-30" style="animation-delay: 0.7s; transform: rotate(45deg);"></div>
+                        <div class="absolute inset-6 border-2 border-green-400 animate-ping opacity-40" style="animation-delay: 1.4s; transform: rotate(45deg);"></div>
+                    </div>
+                    
+                    <!-- Imagen del escudo -->
+                    <img 
+                        src="assets/escudomuchacha.png" 
+                        alt="Muchacha Grande FC" 
+                        class="w-full h-full object-contain relative z-10 drop-shadow-2xl transform hover:scale-105 transition-transform duration-300"
+                        style="filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.6)) drop-shadow(0 0 40px rgba(59, 130, 246, 0.4));"
+                    />
+                    
+                    <!-- Anillos principales DIFERENTES -->
+                    <div class="absolute inset-0 border-4 border-transparent border-t-yellow-400 border-r-blue-400 animate-spin" style="animation-duration: 4s; border-radius: 20px;"></div>
+                    <div class="absolute inset-2 border-2 border-transparent border-b-green-400 border-l-yellow-400 animate-spin" style="animation-duration: 3s; animation-direction: reverse; border-radius: 15px;"></div>
+                </div>
+            </div>
+            
+            <!-- Título -->
+            <div class="text-3xl font-bold text-white mb-2 text-shadow-lg">
+                <span class="bg-gradient-to-r from-yellow-400 via-yellow-300 to-yellow-400 bg-clip-text text-transparent">
+                    Muchacha Grande FC
+                </span>
+            </div>
+            
+            <!-- Subtítulo -->
+            <div class="text-lg text-blue-300 mb-6 font-semibold">
+                Video Poker Profesional
+            </div>
+            
+            <!-- Barra de carga animada -->
+            <div class="w-64 mx-auto">
+                <div class="bg-gray-800 bg-opacity-50 rounded-full h-3 mb-4 overflow-hidden shadow-inner">
+                    <div class="bg-gradient-to-r from-yellow-400 via-yellow-300 to-yellow-400 h-full rounded-full animate-pulse relative">
+                        <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-30 animate-shimmer"></div>
+                    </div>
+                </div>
+                
+                <!-- Texto de carga con efectos -->
+                <div class="text-yellow-400 font-bold text-lg tracking-wider">
+                    <span class="inline-block animate-bounce" style="animation-delay: 0ms;">C</span>
+                    <span class="inline-block animate-bounce" style="animation-delay: 100ms;">A</span>
+                    <span class="inline-block animate-bounce" style="animation-delay: 200ms;">R</span>
+                    <span class="inline-block animate-bounce" style="animation-delay: 300ms;">G</span>
+                    <span class="inline-block animate-bounce" style="animation-delay: 400ms;">A</span>
+                    <span class="inline-block animate-bounce" style="animation-delay: 500ms;">N</span>
+                    <span class="inline-block animate-bounce" style="animation-delay: 600ms;">D</span>
+                    <span class="inline-block animate-bounce" style="animation-delay: 700ms;">O</span>
+                    <span class="mx-2">...</span>
+                </div>
+                
+                <!-- Puntos de carga adicionales -->
+                <div class="flex justify-center space-x-2 mt-4">
+                    <div class="w-2 h-2 bg-yellow-400 rounded-full animate-ping"></div>
+                    <div class="w-2 h-2 bg-blue-400 rounded-full animate-ping" style="animation-delay: 0.2s;"></div>
+                    <div class="w-2 h-2 bg-green-400 rounded-full animate-ping" style="animation-delay: 0.4s;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main App Container -->
+    <div id="root"></div>
+    
+    <!-- JavaScript - poker.js -->
+    <script type="text/babel" src="js/poker.js"></script>
+    
+    <!-- Initialize App -->
+    <script type="text/babel">
+        // Hide loading screen when app loads
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const loadingScreen = document.getElementById('loading');
+                if (loadingScreen) {
+                    loadingScreen.style.display = 'none';
+                }
+            }, 1000);
+        });
+        
+        // Render the main app usando createRoot (React 18)
+        const container = document.getElementById('root');
+        const root = ReactDOM.createRoot(container);
+        root.render(React.createElement(VideoPoker));
+    </script>
+</body>
+</html>
