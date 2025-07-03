@@ -1,4 +1,11 @@
 # 🏆 Muchacha Grande FC - Video Poker
+
+## 🌐 Idiomas / Languages
+[![Español](https://img.shields.io/badge/README-Español-red.svg)](./README.md)
+[![English](https://img.shields.io/badge/README-English-blue.svg)](./README-EN.md)
+
+---
+
 Official Video Poker game for Muchacha Grande FC. A professional card game featuring realistic sounds, spectacular visual effects, and an intelligent suggestion system.
 
 ## 🎮 Features
