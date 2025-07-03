@@ -821,13 +821,15 @@ const VideoPoker = () => {
     ] : []);
 
     return React.createElement('div', {
-      className: `relative w-20 h-28 sm:w-24 sm:h-36 lg:w-28 lg:h-40 cursor-pointer transition-all duration-300 transform hover:scale-105 ${
+      className: `relative w-20 h-28 sm:w-24 sm:h-36 lg:w-28 lg:h-40 cursor-pointer transition-all duration-300 ${
         isHeld 
-          ? 'ring-4 ring-yellow-400 -translate-y-2 lg:-translate-y-3 shadow-yellow-400/30 shadow-lg' 
-          : 'hover:shadow-xl'
+          ? 'ring-4 ring-yellow-400 shadow-yellow-400/30 shadow-lg transform scale-105' 
+          : 'hover:shadow-xl hover:scale-105'
       }`,
       onClick: onClick,
-      style: { perspective: '1000px' }
+      style: { 
+        perspective: '1000px'
+      }
     }, [
       React.createElement('div', {
         key: 'card-inner',
@@ -850,12 +852,14 @@ const VideoPoker = () => {
         }
       }, '💡'),
       
-      // Etiqueta "HOLD" mejorada
+      // Etiqueta "HOLD" simple y efectiva
       isHeld && React.createElement('div', {
         key: 'hold-label',
-        className: 'absolute -bottom-2 left-1/2 transform -translate-x-1/2 bg-yellow-400 text-black font-bold px-2 lg:px-3 py-1 rounded-lg text-xs lg:text-sm border-2 border-white',
+        className: 'absolute bottom-1 left-1/2 transform -translate-x-1/2 bg-yellow-400 text-black font-bold px-2 py-1 rounded text-xs border border-black/20',
         style: {
-          boxShadow: '0 4px 8px rgba(0,0,0,0.3)'
+          boxShadow: '0 2px 4px rgba(0,0,0,0.3)',
+          fontSize: '10px',
+          lineHeight: '1'
         }
       }, 'HOLD')
     ]);
@@ -1412,14 +1416,14 @@ const VideoPoker = () => {
             // Área de cartas más prominente
             React.createElement('div', {
               key: 'cards-section',
-              className: 'bg-black/30 backdrop-blur-sm rounded-2xl p-6 mb-6 border border-white/10 pt-12 lg:pt-16',
+              className: 'bg-black/30 backdrop-blur-sm rounded-2xl p-4 lg:p-6 mb-6 border border-white/10',
               style: {
                 boxShadow: '0 8px 32px rgba(0,0,0,0.2)'
               }
             }, [
               React.createElement('div', {
                 key: 'cards-container',
-                className: 'flex justify-center gap-2 lg:gap-6 mb-4 lg:mb-6 overflow-x-auto px-2'
+                className: 'flex justify-center gap-2 sm:gap-3 lg:gap-4 mb-6 py-4'
               }, cards.length > 0 ? 
                 cards.map((card, index) => 
                   React.createElement(Card, {
