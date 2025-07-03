@@ -836,7 +836,9 @@ const VideoPoker = () => {
           transformStyle: 'preserve-3d',
           transform: !isRevealed ? 'rotateY(180deg)' : 'rotateY(0deg)'
         }
-      }, [cardFront, cardBack]),
+      }, [cardFront, cardBack].map((element, index) => 
+        React.cloneElement(element, { key: `card-side-${index}` })
+      )),
       
       // Indicador de carta sugerida (mejorado)
       isHeld && React.createElement('div', {
