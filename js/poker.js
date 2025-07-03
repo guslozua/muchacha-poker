@@ -805,23 +805,23 @@ const VideoPoker = () => {
     }, card ? [
       React.createElement('div', {
         key: 'top-rank',
-        className: 'text-2xl font-bold leading-none'
+        className: 'text-lg sm:text-xl lg:text-2xl font-bold leading-none'
       }, card.rank),
       React.createElement('div', {
         key: 'center-suit',
-        className: 'text-5xl text-center leading-none',
+        className: 'text-3xl sm:text-4xl lg:text-5xl text-center leading-none',
         style: {
           textShadow: '0 1px 2px rgba(0,0,0,0.1)'
         }
       }, card.suit),
       React.createElement('div', {
         key: 'bottom-rank',
-        className: 'text-2xl font-bold transform rotate-180 self-end leading-none'
+        className: 'text-lg sm:text-xl lg:text-2xl font-bold transform rotate-180 self-end leading-none'
       }, card.rank)
     ] : []);
 
     return React.createElement('div', {
-      className: `relative w-28 h-40 cursor-pointer transition-all duration-300 transform hover:scale-105 ${
+      className: `relative w-20 h-28 sm:w-24 sm:h-36 lg:w-28 lg:h-40 cursor-pointer transition-all duration-300 transform hover:scale-105 ${
         isHeld 
           ? 'ring-4 ring-yellow-400 -translate-y-3 shadow-yellow-400/30 shadow-lg' 
           : 'hover:shadow-xl'
@@ -1340,30 +1340,70 @@ const VideoPoker = () => {
         // Tabla de pagos compacta para móvil
         React.createElement('div', {
           key: 'pay-table-mobile',
-          className: 'lg:hidden bg-black/70 backdrop-blur-sm rounded-xl p-4 mb-6 border border-yellow-400/20'
+          className: 'lg:hidden bg-black/70 backdrop-blur-sm rounded-xl p-3 mb-4 border border-yellow-400/20'
         }, [
           React.createElement('h3', {
             key: 'pay-title-mobile',
-            className: 'text-yellow-400 font-bold text-center mb-3 text-lg'
+            className: 'text-yellow-400 font-bold text-center mb-2 text-base'
           }, 'TABLA DE PAGOS'),
           React.createElement('div', {
             key: 'pay-grid-mobile',
-            className: 'grid grid-cols-2 gap-2 text-sm text-white'
-          }, Object.entries(payTable).slice(0, 6).map(([hand, payouts]) => 
+            className: 'grid grid-cols-1 gap-1 text-xs text-white'
+          }, [
+            // Solo mostrar las 4 manos más importantes en móvil
             React.createElement('div', {
-              key: hand,
+              key: 'royal-mobile',
+              className: 'flex justify-between bg-gradient-to-r from-yellow-600/50 to-yellow-700/50 p-2 rounded border border-yellow-400/30'
+            }, [
+              React.createElement('span', {
+                key: 'royal-name',
+                className: 'font-bold text-yellow-300'
+              }, '🌟 Royal Flush'),
+              React.createElement('span', {
+                key: 'royal-payout',
+                className: 'text-yellow-400 font-bold'
+              }, `${payTable['Royal Flush'][bet - 1]}x`)
+            ]),
+            React.createElement('div', {
+              key: 'four-mobile',
               className: 'flex justify-between bg-green-900/50 p-2 rounded border border-green-700/30'
             }, [
               React.createElement('span', {
-                key: 'hand-name-mobile',
-                className: 'font-semibold text-xs'
-              }, hand.replace(' ', ' ')),
+                key: 'four-name',
+                className: 'font-semibold'
+              }, '💎 Four of a Kind'),
               React.createElement('span', {
-                key: 'payout-mobile',
-                className: 'text-yellow-400 font-bold text-xs'
-              }, `${payouts[bet - 1]}x`)
+                key: 'four-payout',
+                className: 'text-yellow-400 font-bold'
+              }, `${payTable['Four of a Kind'][bet - 1]}x`)
+            ]),
+            React.createElement('div', {
+              key: 'full-mobile',
+              className: 'flex justify-between bg-green-900/50 p-2 rounded border border-green-700/30'
+            }, [
+              React.createElement('span', {
+                key: 'full-name',
+                className: 'font-semibold'
+              }, '🏠 Full House'),
+              React.createElement('span', {
+                key: 'full-payout',
+                className: 'text-yellow-400 font-bold'
+              }, `${payTable['Full House'][bet - 1]}x`)
+            ]),
+            React.createElement('div', {
+              key: 'jacks-mobile',
+              className: 'flex justify-between bg-green-900/50 p-2 rounded border border-green-700/30'
+            }, [
+              React.createElement('span', {
+                key: 'jacks-name',
+                className: 'font-semibold'
+              }, '🃏 Jacks or Better'),
+              React.createElement('span', {
+                key: 'jacks-payout',
+                className: 'text-yellow-400 font-bold'
+              }, `${payTable['Jacks or Better'][bet - 1]}x`)
             ])
-          ))
+          ])
         ]),
 
         gamePhase === 'doubleUp' ? 
@@ -1379,7 +1419,7 @@ const VideoPoker = () => {
             }, [
               React.createElement('div', {
                 key: 'cards-container',
-                className: 'flex justify-center gap-4 lg:gap-6 mb-6'
+                className: 'flex justify-center gap-2 lg:gap-6 mb-4 lg:mb-6 overflow-x-auto px-2'
               }, cards.length > 0 ? 
                 cards.map((card, index) => 
                   React.createElement(Card, {
@@ -1415,7 +1455,7 @@ const VideoPoker = () => {
             // Controles del juego
             React.createElement('div', {
               key: 'controls',
-              className: 'flex justify-center gap-4 mb-6 flex-wrap'
+              className: 'flex justify-center gap-2 lg:gap-4 mb-4 lg:mb-6 flex-wrap px-2'
             }, [
               gamePhase === 'betting' && React.createElement('div', {
                 key: 'betting-controls',
@@ -1445,9 +1485,10 @@ const VideoPoker = () => {
                   key: 'deal-button',
                   onClick: dealCards,
                   disabled: chips < bet || isDealing,
-                  className: 'bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 disabled:from-gray-500 disabled:to-gray-600 text-white font-bold py-3 px-8 rounded-xl flex items-center gap-3 transition-all duration-300 shadow-lg text-lg',
+                  className: 'bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 disabled:from-gray-500 disabled:to-gray-600 text-white font-bold py-2 px-4 lg:py-3 lg:px-8 rounded-xl flex items-center gap-2 lg:gap-3 transition-all duration-300 shadow-lg text-sm lg:text-lg',
                   style: {
-                    boxShadow: '0 8px 25px rgba(59, 130, 246, 0.4)'
+                    boxShadow: '0 8px 25px rgba(59, 130, 246, 0.4)',
+                    minHeight: '44px' // Tamaño mínimo para toque
                   }
                 }, [
                   React.createElement(Shuffle, { key: 'shuffle-icon', className: 'w-6 h-6' }),
