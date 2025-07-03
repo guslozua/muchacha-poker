@@ -836,9 +836,10 @@ const VideoPoker = () => {
           transformStyle: 'preserve-3d',
           transform: !isRevealed ? 'rotateY(180deg)' : 'rotateY(0deg)'
         }
-      }, [cardFront, cardBack].map((element, index) => 
-        React.cloneElement(element, { key: `card-side-${index}` })
-      )),
+      }, [
+        React.cloneElement(cardFront, { key: 'card-front' }),
+        React.cloneElement(cardBack, { key: 'card-back' })
+      ]),
       
       // Indicador de carta sugerida (mejorado)
       isHeld && React.createElement('div', {
@@ -1591,10 +1592,20 @@ const VideoPoker = () => {
   ]);
 };
 
-// Render the app with React 18
+// Render the app with React 18 + Error Boundary
 const container = document.getElementById('root');
-const root = ReactDOM.createRoot(container);
-root.render(React.createElement(VideoPoker));
+if (container) {
+  try {
+    const root = ReactDOM.createRoot(container);
+    root.render(React.createElement(VideoPoker));
+    console.log('✅ Juego cargado correctamente');
+  } catch (error) {
+    console.error('❌ Error al renderizar:', error);
+    container.innerHTML = '<div style="color: white; text-align: center; padding: 50px;">Error al cargar el juego. Por favor, recarga la página.</div>';
+  }
+} else {
+  console.error('❌ No se encontró el elemento root');
+}
 
 // Hide loading screen when app loads
 window.addEventListener('load', () => {
