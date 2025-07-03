@@ -823,7 +823,7 @@ const VideoPoker = () => {
     return React.createElement('div', {
       className: `relative w-20 h-28 sm:w-24 sm:h-36 lg:w-28 lg:h-40 cursor-pointer transition-all duration-300 transform hover:scale-105 ${
         isHeld 
-          ? 'ring-4 ring-yellow-400 -translate-y-3 shadow-yellow-400/30 shadow-lg' 
+          ? 'ring-4 ring-yellow-400 -translate-y-2 lg:-translate-y-3 shadow-yellow-400/30 shadow-lg' 
           : 'hover:shadow-xl'
       }`,
       onClick: onClick,
@@ -853,7 +853,7 @@ const VideoPoker = () => {
       // Etiqueta "HOLD" mejorada
       isHeld && React.createElement('div', {
         key: 'hold-label',
-        className: 'absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 bg-yellow-400 text-black font-bold px-3 py-1 rounded-lg text-sm border-2 border-white',
+        className: 'absolute -bottom-2 left-1/2 transform -translate-x-1/2 bg-yellow-400 text-black font-bold px-2 lg:px-3 py-1 rounded-lg text-xs lg:text-sm border-2 border-white',
         style: {
           boxShadow: '0 4px 8px rgba(0,0,0,0.3)'
         }
@@ -1412,7 +1412,7 @@ const VideoPoker = () => {
             // Área de cartas más prominente
             React.createElement('div', {
               key: 'cards-section',
-              className: 'bg-black/30 backdrop-blur-sm rounded-2xl p-6 mb-6 border border-white/10',
+              className: 'bg-black/30 backdrop-blur-sm rounded-2xl p-6 mb-6 border border-white/10 pt-12 lg:pt-16',
               style: {
                 boxShadow: '0 8px 32px rgba(0,0,0,0.2)'
               }
